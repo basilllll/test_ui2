@@ -12,23 +12,30 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Screen(),
+      home: MainScreen(),
     );
   }
 }
 
-class Screen extends StatefulWidget {
-  const Screen({super.key});
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
   @override
-  State<Screen> createState() => _ScreenState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _ScreenState extends State<Screen> {
+class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-        body: Row(
-      children: [SideBar(), HomeScreen()],
-    ));
+      body: Row(
+        children: [
+          Expanded(child: SideBar()),
+          Expanded(
+            flex: 4,
+            child: HomeScreen(),
+          ),
+        ],
+      ),
+    );
   }
 }

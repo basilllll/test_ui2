@@ -9,9 +9,10 @@ class Chart extends StatefulWidget {
 }
 
 class _ChartState extends State<Chart> {
-  List<Color> gradientColors = [
-    Colors.green,
-    Colors.blue,
+  final List<Color> gradientColors = [
+    const Color(0xFF92CAF9),
+    const Color(0xFFAFEFE5),
+    const Color(0xFF4557FA),
   ];
 
   bool showAvg = false;
@@ -22,37 +23,15 @@ class _ChartState extends State<Chart> {
       children: <Widget>[
         AspectRatio(
           aspectRatio: 6,
-          child: Stack(children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 730),
-              child: Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                    colors: [Colors.black, Color.fromARGB(0, 255, 255, 255)],
-                  ),
-                ),
-                height: 209,
-                width: 3,
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                ),
+          child: Stack(
+            children: [
+              const VerticalDashedLines(),
+              const HorizontalDashedLines(),
+              LineChart(
+                showAvg ? avgData() : mainData(),
               ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(left: 719, top: 183),
-              child: Icon(
-                Icons.arrow_drop_up_outlined,
-                size: 45,
-              ),
-            ),
-            const VerticalDashedLines(),
-            const HorizontalDashedLines(),
-            LineChart(
-              showAvg ? avgData() : mainData(),
-            ),
-          ]),
+            ],
+          ),
         ),
       ],
     );
@@ -225,7 +204,8 @@ class VerticalDashedLine extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final height = constraints.maxWidth;
+        final double height = constraints.maxWidth;
+
         return SizedBox(
           height: height,
           child: CustomPaint(
@@ -240,12 +220,12 @@ class VerticalDashedLine extends StatelessWidget {
 class DashedLinePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
+    final Paint paint = Paint()
       ..color = const Color.fromARGB(40, 158, 158, 158)
       ..strokeWidth = 2;
 
-    const dashWidth = 5;
-    const dashSpace = 5;
+    const int dashWidth = 5;
+    const int dashSpace = 5;
 
     double startY = 0;
     while (startY < size.height) {
@@ -289,8 +269,9 @@ class HorizontalDashedLine extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        const aspectRatio = 1;
-        final width = constraints.maxHeight / aspectRatio;
+        const int aspectRatio = 1;
+        final double width = constraints.maxHeight / aspectRatio;
+
         return SizedBox(
           width: width,
           child: CustomPaint(
@@ -305,15 +286,16 @@ class HorizontalDashedLine extends StatelessWidget {
 class HorizontalDashedLinePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
+    final Paint paint = Paint()
       ..color = const Color.fromARGB(40, 158, 158, 158)
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
 
-    const dashWidth = 5;
-    const dashSpace = 5;
+    const int dashWidth = 5;
+    const int dashSpace = 5;
 
     double startX = 0;
+
     while (startX < size.width) {
       canvas.drawLine(
         Offset(startX, size.height / 2),
